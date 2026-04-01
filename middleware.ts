@@ -5,8 +5,10 @@ import { jwtVerify } from 'jose';
 const ADMIN_SECRET = new TextEncoder().encode(process.env.ADMIN_JWT_SECRET || 'admin-secret');
 
 export async function middleware(request: NextRequest) {
-  // Only protect /admin/dashboard routes
-  if (request.nextUrl.pathname.startsWith('/admin/dashboard')) {
+  const path = request.nextUrl.pathname;
+
+  // Protect /admin/dashboard routes with JWT
+  if (path.startsWith('/admin/dashboard')) {
     const token = request.cookies.get('admin_token')?.value;
 
     if (!token) {
