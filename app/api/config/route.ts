@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET() {
   try {
     let config = await prisma.examConfig.findFirst();
@@ -18,6 +20,7 @@ export async function GET() {
     // Return only public fields
     return NextResponse.json({
       durationMinutes: config.durationMinutes,
+      passingPercentage: config.passingPercentage,
       orgName: config.orgName,
       logoUrl: config.logoUrl
     });

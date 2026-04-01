@@ -58,8 +58,12 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-blue-primary flex items-center justify-center px-4">
-      <Card className="w-full max-w-md">
+    <div className="min-h-screen bg-gradient-to-br from-blue-navy via-blue-dark to-blue-primary bg-[length:200%_200%] animate-gradient-shift flex items-center justify-center px-4 relative overflow-hidden">
+      {/* Decorative floating blur spheres */}
+      <div className="absolute top-0 right-[-10%] w-[500px] h-[500px] bg-blue-primary/40 rounded-full blur-[100px] mix-blend-screen pointer-events-none" />
+      <div className="absolute bottom-[-10%] left-[-10%] w-[400px] h-[400px] bg-indigo-500/30 rounded-full blur-[100px] mix-blend-screen pointer-events-none" />
+      
+      <Card className="w-full max-w-md !bg-white/95 backdrop-blur-xl shadow-glass border border-white/20 animate-slide-up relative z-10">
         <div className="text-center mb-8">
           {logoUrl ? (
             <img src={logoUrl} alt="IJT Logo" className="h-16 w-auto mx-auto mb-4 object-contain" />

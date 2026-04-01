@@ -8,7 +8,7 @@ interface QuestionCardProps {
 
 export function QuestionCard({ questionNumber, questionText, children }: QuestionCardProps) {
   return (
-    <div className="bg-white rounded-xl shadow-card p-6 md:p-8 mb-6">
+    <div className="bg-white rounded-xl shadow-card p-6 md:p-8 mb-6 animate-slide-in-right" style={{ animationFillMode: 'both' }}>
       {/* Spec: Question number — Poppins 700, blue */}
       <p className="text-blue-primary font-bold text-lg mb-2">
         Q{questionNumber}.

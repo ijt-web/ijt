@@ -12,7 +12,7 @@ export function OptionRow({ label, text, selected, onClick }: OptionRowProps) {
     <button
       type="button"
       onClick={onClick}
-      className={`w-full text-left px-4 py-3 rounded-lg border-2 flex items-center gap-3 transition-all duration-200
+      className={`w-full text-left px-4 py-3 rounded-lg border-2 flex items-center gap-3 transition-all duration-200 hover:scale-[1.01] active:scale-[0.99]
         ${selected 
           ? 'bg-blue-light border-blue-primary shadow-sm' 
           : 'bg-white border-grey-border hover:bg-blue-light/30 hover:border-blue-primary/30'

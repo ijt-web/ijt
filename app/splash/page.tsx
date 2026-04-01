@@ -55,7 +55,7 @@ export default function SplashPage() {
   }, []);
 
   return (
-    <div className="fixed inset-0 z-[100] bg-blue-primary flex flex-col items-center justify-center overflow-hidden">
+    <div className="fixed inset-0 z-[100] bg-gradient-to-br from-blue-navy via-blue-dark to-blue-primary bg-[length:200%_200%] animate-gradient-shift flex flex-col items-center justify-center overflow-hidden">
       <div className="relative flex items-center justify-center">
         {/* Spec: Red spinning ring (160px, border-top red, rest transparent) */}
         <div 
@@ -68,8 +68,8 @@ export default function SplashPage() {
           }}
         />
         
-        {/* Spec: IJT logo (120px) with breathing pulse animation */}
-        <div className="w-[120px] h-[120px] bg-white rounded-full flex items-center justify-center shadow-2xl animate-breathe relative z-10">
+        {/* Glowing IJT logo (120px) with breathing pulse animation & glowing shadow */}
+        <div className="w-[120px] h-[120px] bg-white rounded-full flex items-center justify-center shadow-[0_0_80px_rgba(255,255,255,0.25)] animate-breathe relative z-10">
           {logoUrl ? (
             <img src={logoUrl} alt="Logo" className="h-16 w-auto object-contain" />
           ) : (
@@ -79,7 +79,7 @@ export default function SplashPage() {
       </div>
 
       {/* Spec: Org name below — Poppins 600, white, letter-spacing 0.05em */}
-      <h1 className="mt-10 text-white text-xl font-semibold tracking-[0.05em]">
+      <h1 className="mt-10 text-white text-xl font-semibold tracking-[0.05em] drop-shadow-md">
         Islami Jamiat Talba
       </h1>
 

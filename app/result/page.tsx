@@ -10,6 +10,7 @@ export default function ResultPage() {
   const router = useRouter();
   const [result, setResult] = useState<any>(null);
   const [logoUrl, setLogoUrl] = useState<string | null>(null);
+  const [passingPercentage, setPassingPercentage] = useState<number>(50);
 
   useEffect(() => {
     const stored = localStorage.getItem('exam_result');
@@ -21,7 +22,10 @@ export default function ResultPage() {
 
     fetch('/api/config')
       .then(res => res.json())
-      .then(data => { if (data.logoUrl) setLogoUrl(data.logoUrl); })
+      .then(data => { 
+        if (data.logoUrl) setLogoUrl(data.logoUrl);
+        if (data.passingPercentage) setPassingPercentage(data.passingPercentage);
+      })
       .catch(() => {});
   }, [router]);
 
@@ -34,9 +38,15 @@ export default function ResultPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white flex items-center justify-center px-4 py-12">
-      {/* Spec: centered card, max-width 480px */}
-      <Card className="w-full max-w-[480px] text-center">
+    <div className="min-h-screen bg-gradient-to-br from-blue-navy via-blue-dark to-blue-primary bg-[length:200%_200%] animate-gradient-shift flex items-center justify-center px-4 py-12 relative overflow-hidden">
+      {/* Decorative floating blur spheres */}
+      <div className="absolute top-0 right-[-10%] w-[500px] h-[500px] bg-blue-primary/40 rounded-full blur-[100px] mix-blend-screen pointer-events-none" />
+      <div className="absolute bottom-[-10%] left-[-10%] w-[400px] h-[400px] bg-indigo-500/30 rounded-full blur-[100px] mix-blend-screen pointer-events-none" />
+
+      {/* Spec: centered card, max-width 480px, with conditional glow outline on pass/fail */}
+      <Card className={`w-full max-w-[480px] text-center !bg-white/95 backdrop-blur-xl animate-scale-in relative z-10 transition-all duration-700
+        ${result.passed ? 'shadow-[0_0_80px_rgba(46,125,50,0.3)] border border-green-pass/20' : 'shadow-[0_0_80px_rgba(229,57,53,0.3)] border border-red-accent/20'}
+      `}>
         {/* Spec: IJT logo (64px, centered) */}
         {logoUrl ? (
           <img src={logoUrl} alt="Logo" className="h-16 w-auto mx-auto mb-6 object-contain" />
@@ -56,8 +66,8 @@ export default function ResultPage() {
 
         <div className="w-full h-px bg-grey-border mb-6" />
 
-        {/* Spec: Score — large percentage, Poppins 700, blue */}
-        <p className="text-5xl font-bold text-blue-primary mb-2">
+        {/* Spec: Score — large percentage, Poppins 700, conditional color */}
+        <p className={`text-6xl font-black mb-2 animate-slide-up ${result.passed ? 'text-green-pass' : 'text-red-accent'}`}>
           {Math.round(result.percentage)}%
         </p>
 
@@ -75,7 +85,7 @@ export default function ResultPage() {
 
         {/* Spec: Passing mark % — muted, small */}
         <p className="text-text-muted text-xs mb-6">
-          Passing mark: 50%
+          Passing mark: {passingPercentage}%
         </p>
 
         <div className="w-full h-px bg-grey-border mb-6" />

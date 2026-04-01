@@ -12,7 +12,7 @@ export function Navbar({
   children 
 }: NavbarProps) {
   return (
-    <nav className="fixed top-0 left-0 right-0 h-20 bg-white shadow-sm border-b border-grey-border z-50 flex items-center justify-between px-6 md:px-12">
+    <nav className="fixed top-0 left-0 right-0 h-20 bg-white/85 backdrop-blur-xl shadow-glass border-b border-white/40 z-50 flex items-center justify-between px-6 md:px-12 transition-all">
       <div className="flex items-center gap-4">
         {logoUrl ? (
           <img src={logoUrl} alt="Org Logo" className="h-12 w-auto object-contain" />
