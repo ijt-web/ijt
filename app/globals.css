@@ -1,0 +1,85 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --blue-primary: #1A73E8;
+  --blue-dark: #0D47A1;
+  --blue-light: #E8F0FE;
+  --red-accent: #E53935;
+  --red-hover: #C62828;
+  --white: #FFFFFF;
+  --grey-light: #F5F5F5;
+  --grey-border: #E0E0E0;
+  --text-dark: #1A1A2E;
+  --text-muted: #6B7280;
+  --green-pass: #2E7D32;
+  --green-pass-bg: #E8F5E9;
+  --red-fail-bg: #FFEBEE;
+}
+
+body {
+  color: var(--text-dark);
+  background: var(--grey-light);
+  font-family: 'Poppins', sans-serif;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* ===== Spec Section 5.3: Splash Animations ===== */
+
+/* Logo breathing — spec: opacity 0.75, scale 0.96, 2.8s */
+@keyframes breathe {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.75; transform: scale(0.96); }
+}
+
+/* Spinning red ring — spec: 1.2s linear infinite */
+@keyframes spin-ring {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* ===== Spec Section 5.4: Timer pulse — ≤ 5 minutes ===== */
+@keyframes pulse-warning {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+/* ===== UI Animations ===== */
+@keyframes scale-up {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+@keyframes progress {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(200%); }
+}
+
+/* Animation classes */
+.animate-breathe {
+  animation: breathe 2.8s ease-in-out infinite;
+}
+
+.animate-spin-ring {
+  animation: spin-ring 1.2s linear infinite;
+}
+
+.animate-pulse-warning {
+  animation: pulse-warning 1s ease-in-out infinite;
+}
+
+.animate-scale-up {
+  animation: scale-up 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Input focus ring */
+input:focus, select:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--blue-primary);
+}

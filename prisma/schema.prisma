@@ -1,0 +1,63 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Student {
+  id         String   @id @default(cuid())
+  rollNumber Int      @unique @default(autoincrement())
+  name       String
+  fatherName String
+  studentId  String   @unique
+  password   String
+  class      String
+  createdAt  DateTime @default(now())
+  result     Result?
+}
+
+model Question {
+  id            String          @id @default(cuid())
+  class         String
+  questionText  String
+  optionA       String
+  optionB       String
+  optionC       String
+  optionD       String
+  correctOption String
+  createdAt     DateTime        @default(now())
+  answers       AttemptAnswer[]
+}
+
+model ExamConfig {
+  id                String  @id @default(cuid())
+  durationMinutes   Int     @default(55)
+  passingPercentage Float   @default(50)
+  logoUrl           String?
+  orgName           String  @default("Islami Jamiat Talba")
+}
+
+model Result {
+  id          String          @id @default(cuid())
+  studentId   String          @unique
+  marks       Int
+  total       Int
+  percentage  Float
+  passed      Boolean
+  submittedAt DateTime        @default(now())
+  answers     AttemptAnswer[]
+  student     Student         @relation(fields: [studentId], references: [id])
+}
+
+model AttemptAnswer {
+  id             String   @id @default(cuid())
+  resultId       String
+  questionId     String
+  selectedOption String
+  question       Question @relation(fields: [questionId], references: [id])
+  result         Result   @relation(fields: [resultId], references: [id])
+}
