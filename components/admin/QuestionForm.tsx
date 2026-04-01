@@ -18,7 +18,8 @@ export function QuestionForm({ classId, editingQuestion, onSaved, onCancelEdit }
     optionB: '',
     optionC: '',
     optionD: '',
-    correctOption: 'A'
+    correctOption: 'A',
+    stream: 'all'
   });
 
   // Populate form when editing
@@ -30,7 +31,8 @@ export function QuestionForm({ classId, editingQuestion, onSaved, onCancelEdit }
         optionB: editingQuestion.optionB,
         optionC: editingQuestion.optionC,
         optionD: editingQuestion.optionD,
-        correctOption: editingQuestion.correctOption
+        correctOption: editingQuestion.correctOption,
+        stream: editingQuestion.stream || 'all'
       });
     }
   }, [editingQuestion]);
@@ -54,7 +56,15 @@ export function QuestionForm({ classId, editingQuestion, onSaved, onCancelEdit }
       if (!res.ok) throw new Error('Failed to save');
 
       // Reset form
-      setForm({ questionText: '', optionA: '', optionB: '', optionC: '', optionD: '', correctOption: 'A' });
+      setForm({ 
+        questionText: '', 
+        optionA: '', 
+        optionB: '', 
+        optionC: '', 
+        optionD: '', 
+        correctOption: 'A',
+        stream: 'all'
+      });
       onSaved();
     } catch (err) {
       alert('Error saving question');
@@ -95,18 +105,33 @@ export function QuestionForm({ classId, editingQuestion, onSaved, onCancelEdit }
         ))}
       </div>
 
-      <div className="flex flex-col gap-2">
-        <label className="text-sm font-semibold text-text-muted uppercase tracking-wider">Correct Answer</label>
-        <select
-          className="px-4 py-3 bg-white border-2 border-grey-border rounded-lg focus:border-blue-primary transition-all cursor-pointer w-40"
-          value={form.correctOption}
-          onChange={(e) => setForm(prev => ({ ...prev, correctOption: e.target.value }))}
-        >
-          <option value="A">A</option>
-          <option value="B">B</option>
-          <option value="C">C</option>
-          <option value="D">D</option>
-        </select>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="flex flex-col gap-2">
+          <label className="text-sm font-semibold text-text-muted uppercase tracking-wider">Correct Answer</label>
+          <select
+            className="px-4 py-3 bg-white border-2 border-grey-border rounded-lg focus:border-blue-primary transition-all cursor-pointer w-full"
+            value={form.correctOption}
+            onChange={(e) => setForm(prev => ({ ...prev, correctOption: e.target.value }))}
+          >
+            <option value="A">A</option>
+            <option value="B">B</option>
+            <option value="C">C</option>
+            <option value="D">D</option>
+          </select>
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <label className="text-sm font-semibold text-text-muted uppercase tracking-wider">Stream (Target Students)</label>
+          <select
+            className="px-4 py-3 bg-white border-2 border-grey-border rounded-lg focus:border-blue-primary transition-all cursor-pointer w-full"
+            value={form.stream}
+            onChange={(e) => setForm(prev => ({ ...prev, stream: e.target.value }))}
+          >
+            <option value="all">All (Both Streams)</option>
+            <option value="biology">Biology Only</option>
+            <option value="computer">Computer Only</option>
+          </select>
+        </div>
       </div>
 
       <div className="flex gap-3">
@@ -115,7 +140,15 @@ export function QuestionForm({ classId, editingQuestion, onSaved, onCancelEdit }
         </Button>
         {editingQuestion && onCancelEdit && (
           <Button type="button" variant="secondary" onClick={() => {
-            setForm({ questionText: '', optionA: '', optionB: '', optionC: '', optionD: '', correctOption: 'A' });
+            setForm({ 
+              questionText: '', 
+              optionA: '', 
+              optionB: '', 
+              optionC: '', 
+              optionD: '', 
+              correctOption: 'A',
+              stream: 'all'
+            });
             onCancelEdit();
           }}>
             Cancel

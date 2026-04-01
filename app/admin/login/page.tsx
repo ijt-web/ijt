@@ -67,7 +67,7 @@ export default function AdminLoginPage() {
             Admin Panel
           </h1>
           <p className="text-text-muted mt-2">
-            Islami Jamiat Talba
+            Study Aid project
           </p>
         </div>
 

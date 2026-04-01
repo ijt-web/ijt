@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
-import { verifyStudentToken } from '@/lib/jwt';
+import { verifyStudentToken, signExamStart } from '@/lib/jwt';
 import { seededShuffle } from '@/lib/shuffle';
 
 export async function GET(req: Request) {
@@ -20,9 +20,15 @@ export async function GET(req: Request) {
     const studentClass = decoded.class;
     const studentId = decoded.studentId;
 
-    // Fetch questions for student's class
+    // Fetch questions for student's class and stream
     const fetchedQuestions = await prisma.question.findMany({
-      where: { class: studentClass }
+      where: { 
+        class: studentClass,
+        OR: [
+          { stream: 'all' },
+          { stream: decoded.stream || 'all' }
+        ]
+      }
     });
 
     // Shuffle questions with seed = studentId (consistent on refresh)
@@ -34,7 +40,13 @@ export async function GET(req: Request) {
       return rest;
     });
 
-    return NextResponse.json(sanitized);
+    // Sign the start time for server-side integrity check on submit
+    const startTimeToken = await signExamStart(decoded.id);
+
+    return NextResponse.json({ 
+      questions: sanitized,
+      startTimeToken 
+    });
 
   } catch (error) {
     console.error('Fetch Questions Error:', error);

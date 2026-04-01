@@ -8,12 +8,13 @@ interface ResultsTableProps {
   results: any[];
 }
 
-type SortKey = 'rollNumber' | 'name' | 'class' | 'marks' | 'total' | 'percentage' | 'passed' | 'submittedAt';
+type SortKey = 'rollNumber' | 'name' | 'class' | 'stream' | 'marks' | 'total' | 'percentage' | 'passed' | 'submittedAt';
 
 export function ResultsTable({ results }: ResultsTableProps) {
   const [sortKey, setSortKey] = useState<SortKey>('rollNumber');
   const [sortDir, setSortDir] = useState<'asc' | 'desc'>('asc');
   const [filterClass, setFilterClass] = useState<string>('all');
+  const [filterStream, setFilterStream] = useState<string>('all');
   const [filterStatus, setFilterStatus] = useState<string>('all');
   const [reviewStudent, setReviewStudent] = useState<any>(null);
 
@@ -24,13 +25,16 @@ export function ResultsTable({ results }: ResultsTableProps) {
     if (filterClass !== 'all') {
       data = data.filter(r => r.student?.class === filterClass);
     }
+    if (filterStream !== 'all') {
+      data = data.filter(r => (r.stream || r.student?.stream) === filterStream);
+    }
     if (filterStatus !== 'all') {
       data = data.filter(r => filterStatus === 'pass' ? r.passed : !r.passed);
     }
 
     data.sort((a, b) => {
-      let valA = sortKey === 'name' ? a.student?.name : sortKey === 'class' ? a.student?.class : sortKey === 'rollNumber' ? a.student?.rollNumber : a[sortKey];
-      let valB = sortKey === 'name' ? b.student?.name : sortKey === 'class' ? b.student?.class : sortKey === 'rollNumber' ? b.student?.rollNumber : b[sortKey];
+      let valA = sortKey === 'name' ? a.student?.name : sortKey === 'class' ? a.student?.class : sortKey === 'rollNumber' ? a.student?.rollNumber : sortKey === 'stream' ? (a.stream || a.student?.stream) : a[sortKey];
+      let valB = sortKey === 'name' ? b.student?.name : sortKey === 'class' ? b.student?.class : sortKey === 'rollNumber' ? b.student?.rollNumber : sortKey === 'stream' ? (b.stream || b.student?.stream) : b[sortKey];
 
       if (typeof valA === 'string') valA = valA.toLowerCase();
       if (typeof valB === 'string') valB = valB.toLowerCase();
@@ -54,9 +58,9 @@ export function ResultsTable({ results }: ResultsTableProps) {
 
   // CSV Export
   const exportCSV = () => {
-    const headers = 'Roll No,Name,Class,Marks,Total,Percentage,Status,Submitted At\n';
+    const headers = 'Roll No,Name,Class,Stream,Marks,Total,Percentage,Status,Submitted At\n';
     const rows = filtered.map(r =>
-      `${r.student?.rollNumber},"${r.student?.name}",${r.student?.class},${r.marks},${r.total},${Math.round(r.percentage)}%,${r.passed ? 'PASS' : 'FAIL'},${new Date(r.submittedAt).toLocaleString()}`
+      `${r.student?.rollNumber},"${r.student?.name}",${r.student?.class},${(r.stream || r.student?.stream)?.toUpperCase()},${r.marks},${r.total},${Math.round(r.percentage)}%,${r.passed ? 'PASS' : 'FAIL'},${new Date(r.submittedAt).toLocaleString()}`
     ).join('\n');
 
     const blob = new Blob([headers + rows], { type: 'text/csv' });
@@ -92,6 +96,15 @@ export function ResultsTable({ results }: ResultsTableProps) {
         </select>
         <select
           className="px-3 py-2 border border-grey-border rounded-lg text-sm bg-white"
+          value={filterStream}
+          onChange={(e) => setFilterStream(e.target.value)}
+        >
+          <option value="all">All Streams</option>
+          <option value="biology">Biology</option>
+          <option value="computer">Computer</option>
+        </select>
+        <select
+          className="px-3 py-2 border border-grey-border rounded-lg text-sm bg-white"
           value={filterStatus}
           onChange={(e) => setFilterStatus(e.target.value)}
         >
@@ -115,6 +128,7 @@ export function ResultsTable({ results }: ResultsTableProps) {
               <SortHeader label="Roll No" field="rollNumber" />
               <SortHeader label="Name" field="name" />
               <SortHeader label="Class" field="class" />
+              <SortHeader label="Stream" field="stream" />
               <SortHeader label="Marks" field="marks" />
               <SortHeader label="Total" field="total" />
               <SortHeader label="%" field="percentage" />
@@ -126,7 +140,7 @@ export function ResultsTable({ results }: ResultsTableProps) {
           <tbody>
             {filtered.length === 0 ? (
               <tr>
-                <td colSpan={9} className="text-center py-8 text-text-muted">No results found.</td>
+                <td colSpan={10} className="text-center py-8 text-text-muted">No results found.</td>
               </tr>
             ) : (
               filtered.map((r) => (
@@ -134,6 +148,7 @@ export function ResultsTable({ results }: ResultsTableProps) {
                   <td className="px-3 py-3 font-mono font-bold text-blue-primary">{r.student?.rollNumber}</td>
                   <td className="px-3 py-3 font-medium text-text-dark">{r.student?.name}</td>
                   <td className="px-3 py-3 text-text-muted">{r.student?.class}</td>
+                  <td className="px-3 py-3 text-text-muted uppercase text-xs font-bold tracking-tight">{(r.stream || r.student?.stream || 'all')}</td>
                   <td className="px-3 py-3 font-bold">{r.marks}</td>
                   <td className="px-3 py-3 text-text-muted">{r.total}</td>
                   <td className="px-3 py-3 font-bold">{Math.round(r.percentage)}%</td>

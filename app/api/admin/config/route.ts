@@ -22,7 +22,7 @@ export async function GET() {
         data: {
           durationMinutes: 55,
           passingPercentage: 50,
-          orgName: 'Islami Jamiat Talba'
+          orgName: 'Study Aid project'
         }
       });
     }

@@ -9,8 +9,8 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "IJT Examination System",
-  description: "Online MCQ Examination System for Islami Jamiat Talba",
+  title: "Study Aid Examination System",
+  description: "Online MCQ Examination System for Study Aid project",
 };
 
 export default function RootLayout({

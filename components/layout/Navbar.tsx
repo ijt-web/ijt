@@ -7,7 +7,7 @@ interface NavbarProps {
 }
 
 export function Navbar({ 
-  title = "Islami Jamiat Talba — Examination", 
+  title = "Study Aid Project — Examination", 
   logoUrl, 
   children 
 }: NavbarProps) {
@@ -17,8 +17,8 @@ export function Navbar({
         {logoUrl ? (
           <img src={logoUrl} alt="Org Logo" className="h-12 w-auto object-contain" />
         ) : (
-          <div className="h-10 w-10 rounded-full bg-blue-primary flex items-center justify-center text-white font-bold">
-            IJT
+          <div className="h-10 px-2 rounded-full bg-blue-primary flex items-center justify-center text-white font-bold text-xs text-center">
+            Study Aid
           </div>
         )}
         <h1 className="hidden md:block text-blue-dark font-bold text-lg tracking-tight uppercase">

@@ -9,7 +9,7 @@ export default function ExamSettingsPage() {
   const [config, setConfig] = useState({
     durationMinutes: 55,
     passingPercentage: 50,
-    orgName: 'Islami Jamiat Talba',
+    orgName: 'Study Aid project',
     logoUrl: '' as string | null
   });
   const [loading, setLoading] = useState(true);
@@ -25,7 +25,7 @@ export default function ExamSettingsPage() {
         setConfig({
           durationMinutes: data.durationMinutes || 55,
           passingPercentage: data.passingPercentage || 50,
-          orgName: data.orgName || 'Islami Jamiat Talba',
+          orgName: data.orgName || 'Study Aid project',
           logoUrl: data.logoUrl || null
         });
         setLoading(false);

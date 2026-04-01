@@ -16,6 +16,7 @@ interface CSVRow {
   optionC: string;
   optionD: string;
   correctOption: string;
+  stream: string;
   error?: string;
 }
 
@@ -27,7 +28,7 @@ export function CSVImport({ classId, onImported }: CSVImportProps) {
 
   // Download CSV Template
   const downloadTemplate = () => {
-    const template = 'question,option_a,option_b,option_c,option_d,correct\nWho wrote the law of gravity?,Newton,Tesla,Einstein,Merlin,A\n';
+    const template = 'question,option_a,option_b,option_c,option_d,correct,stream\nWho wrote the law of gravity?,Newton,Tesla,Einstein,Merlin,A,all\n';
     const blob = new Blob([template], { type: 'text/csv' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -54,7 +55,8 @@ export function CSVImport({ classId, onImported }: CSVImportProps) {
             optionB: row.option_b || row.optionB || '',
             optionC: row.option_c || row.optionC || '',
             optionD: row.option_d || row.optionD || '',
-            correctOption: (row.correct || row.correctOption || '').toUpperCase()
+            correctOption: (row.correct || row.correctOption || '').toUpperCase(),
+            stream: (row.stream || '').toLowerCase() || 'all'
           };
 
           // Validate
@@ -62,6 +64,8 @@ export function CSVImport({ classId, onImported }: CSVImportProps) {
             q.error = 'Missing required fields';
           } else if (!['A', 'B', 'C', 'D'].includes(q.correctOption)) {
             q.error = 'Correct answer must be A, B, C, or D';
+          } else if (!['all', 'biology', 'computer'].includes(q.stream)) {
+            q.error = 'Stream must be all, biology, or computer';
           }
 
           return q;
@@ -83,6 +87,8 @@ export function CSVImport({ classId, onImported }: CSVImportProps) {
         r.error = 'Missing required fields';
       } else if (!['A', 'B', 'C', 'D'].includes(r.correctOption.toUpperCase())) {
         r.error = 'Correct answer must be A, B, C, or D';
+      } else if (!['all', 'biology', 'computer'].includes(r.stream.toLowerCase())) {
+        r.error = 'Stream must be all, biology, or computer';
       } else {
         r.error = undefined;
       }
@@ -118,7 +124,8 @@ export function CSVImport({ classId, onImported }: CSVImportProps) {
             optionB: r.optionB,
             optionC: r.optionC,
             optionD: r.optionD,
-            correctOption: r.correctOption.toUpperCase()
+            correctOption: r.correctOption.toUpperCase(),
+            stream: r.stream.toLowerCase()
           }))
         })
       });
@@ -173,6 +180,7 @@ export function CSVImport({ classId, onImported }: CSVImportProps) {
                 <th className="text-left px-3 py-2 font-semibold text-text-muted">C</th>
                 <th className="text-left px-3 py-2 font-semibold text-text-muted">D</th>
                 <th className="text-left px-3 py-2 font-semibold text-text-muted">Ans</th>
+                <th className="text-left px-3 py-2 font-semibold text-text-muted">Stream</th>
                 <th className="px-3 py-2"></th>
               </tr>
             </thead>
@@ -201,6 +209,13 @@ export function CSVImport({ classId, onImported }: CSVImportProps) {
                       <option value="B">B</option>
                       <option value="C">C</option>
                       <option value="D">D</option>
+                    </select>
+                  </td>
+                  <td className="px-3 py-2">
+                    <select className="bg-transparent border-b border-grey-border focus:border-blue-primary outline-none py-1" value={row.stream} onChange={(e) => updateRow(idx, 'stream', e.target.value)}>
+                      <option value="all">All</option>
+                      <option value="biology">Biology</option>
+                      <option value="computer">Computer</option>
                     </select>
                   </td>
                   <td className="px-3 py-2">

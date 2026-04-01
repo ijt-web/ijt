@@ -30,11 +30,14 @@ export default function SplashPage() {
       });
 
       if (!res.ok) throw new Error('Failed to load questions');
-
-      const questions = await res.json();
+      
+      const data = await res.json();
+      const questions = Array.isArray(data) ? data : data.questions;
+      const startTimeToken = data.startTimeToken;
 
       // Store questions in sessionStorage for exam page
       sessionStorage.setItem('exam_questions', JSON.stringify(questions));
+      if (startTimeToken) sessionStorage.setItem('exam_start_token', startTimeToken);
       sessionStorage.setItem('exam_duration', String(config.durationMinutes || 55));
 
       // Spec: Minimum display time of 1.5 seconds
@@ -68,19 +71,19 @@ export default function SplashPage() {
           }}
         />
         
-        {/* Glowing IJT logo (120px) with breathing pulse animation & glowing shadow */}
+        {/* Glowing Study Aid logo (120px) with breathing pulse animation & glowing shadow */}
         <div className="w-[120px] h-[120px] bg-white rounded-full flex items-center justify-center shadow-[0_0_80px_rgba(255,255,255,0.25)] animate-breathe relative z-10">
           {logoUrl ? (
             <img src={logoUrl} alt="Logo" className="h-16 w-auto object-contain" />
           ) : (
-            <span className="text-blue-primary text-4xl font-black">IJT</span>
+            <span className="text-blue-primary text-4xl font-black text-center">Study Aid</span>
           )}
         </div>
       </div>
 
       {/* Spec: Org name below — Poppins 600, white, letter-spacing 0.05em */}
       <h1 className="mt-10 text-white text-xl font-semibold tracking-[0.05em] drop-shadow-md">
-        Islami Jamiat Talba
+        Study Aid project
       </h1>
 
       {/* Spec: "Preparing your examination..." — Poppins 400, white 70% opacity */}

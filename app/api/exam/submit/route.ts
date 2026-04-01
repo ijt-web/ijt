@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
-import { verifyStudentToken } from '@/lib/jwt';
+import { verifyStudentToken, verifyExamStart } from '@/lib/jwt';
+
+const MIN_EXAM_SECONDS = 120; // 2 minutes minimum to prevent bots
 
 export async function POST(req: Request) {
   try {
@@ -16,7 +18,21 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
     }
 
-    const { answers } = await req.json(); // Array: [{ questionId, selectedOption }]
+    const { answers, startTimeToken } = await req.json();
+
+    // Anti-cheat: Verify minimum time spent on exam
+    if (startTimeToken) {
+      const examStart = await verifyExamStart(startTimeToken);
+      if (examStart && examStart.startTime) {
+        const elapsedSeconds = (Date.now() - examStart.startTime) / 1000;
+        if (elapsedSeconds < MIN_EXAM_SECONDS) {
+          return NextResponse.json(
+            { error: `Submission rejected: Exam completed suspiciously fast (${Math.round(elapsedSeconds)}s). Minimum ${MIN_EXAM_SECONDS}s required.` },
+            { status: 403 }
+          );
+        }
+      }
+    }
 
     // Prevent double submission
     const existingResult = await prisma.result.findUnique({
@@ -53,6 +69,15 @@ export async function POST(req: Request) {
     const config = await prisma.examConfig.findFirst() || { passingPercentage: 50 };
     const passed = percentage >= config.passingPercentage;
 
+    // Fetch student to get their stream
+    const student = await prisma.student.findUnique({
+      where: { id: decoded.id }
+    });
+
+    if (!student) {
+      return NextResponse.json({ error: 'Student not found' }, { status: 404 });
+    }
+
     // Save atomic transaction
     const result = await prisma.$transaction(async (tx) => {
       const res = await tx.result.create({
@@ -61,7 +86,8 @@ export async function POST(req: Request) {
           marks,
           total,
           percentage,
-          passed
+          passed,
+          stream: student.stream
         }
       });
 
@@ -76,10 +102,7 @@ export async function POST(req: Request) {
       return res;
     });
 
-    // Return full result info for page redirect
-    const student = await prisma.student.findUnique({
-      where: { id: decoded.id }
-    });
+
 
     return NextResponse.json({
       marks,
@@ -88,7 +111,8 @@ export async function POST(req: Request) {
       passed,
       rollNumber: student?.rollNumber,
       name: student?.name,
-      class: student?.class
+      class: student?.class,
+      stream: student?.stream
     }, { status: 201 });
 
   } catch (error) {

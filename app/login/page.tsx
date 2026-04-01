@@ -66,17 +66,17 @@ export default function LoginPage() {
       <Card className="w-full max-w-md !bg-white/95 backdrop-blur-xl shadow-glass border border-white/20 animate-slide-up relative z-10">
         <div className="text-center mb-8">
           {logoUrl ? (
-            <img src={logoUrl} alt="IJT Logo" className="h-16 w-auto mx-auto mb-4 object-contain" />
+            <img src={logoUrl} alt="Study Aid Logo" className="h-16 w-auto mx-auto mb-4 object-contain" />
           ) : (
-            <div className="w-16 h-16 bg-blue-primary rounded-full mx-auto mb-4 flex items-center justify-center text-white text-2xl font-bold">
-              IJT
+            <div className="w-16 h-16 bg-blue-primary rounded-full mx-auto mb-4 flex items-center justify-center text-white text-xs font-bold text-center px-1">
+              Study Aid
             </div>
           )}
           <h1 className="text-3xl font-bold text-text-dark tracking-tight">
             Welcome Back
           </h1>
           <p className="text-text-muted mt-2">
-            Islami Jamiat Talba Examination System
+            Study Aid Project Examination System
           </p>
         </div>
 

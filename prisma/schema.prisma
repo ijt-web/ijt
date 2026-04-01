@@ -12,10 +12,10 @@ model Student {
   id         String   @id @default(cuid())
   rollNumber Int      @unique @default(autoincrement())
   name       String
-  fatherName String
   studentId  String   @unique
   password   String
   class      String
+  stream     String   @default("biology")
   createdAt  DateTime @default(now())
   result     Result?
 }
@@ -29,6 +29,7 @@ model Question {
   optionC       String
   optionD       String
   correctOption String
+  stream        String          @default("all")
   createdAt     DateTime        @default(now())
   answers       AttemptAnswer[]
 }
@@ -38,7 +39,7 @@ model ExamConfig {
   durationMinutes   Int     @default(55)
   passingPercentage Float   @default(50)
   logoUrl           String?
-  orgName           String  @default("Islami Jamiat Talba")
+  orgName           String  @default("Study Aid project")
 }
 
 model Result {
@@ -48,6 +49,7 @@ model Result {
   total       Int
   percentage  Float
   passed      Boolean
+  stream      String          @default("biology")
   submittedAt DateTime        @default(now())
   answers     AttemptAnswer[]
   student     Student         @relation(fields: [studentId], references: [id])

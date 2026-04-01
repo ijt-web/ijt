@@ -29,7 +29,7 @@ export function Sidebar() {
     <div className="flex flex-col h-full">
       {/* Header */}
       <div className="p-6 border-b border-grey-border">
-        <h2 className="text-lg font-bold text-blue-dark">IJT Admin</h2>
+        <h2 className="text-lg font-bold text-blue-dark">Study Aid Admin</h2>
         <p className="text-xs text-text-muted mt-1">Examination System</p>
       </div>
 

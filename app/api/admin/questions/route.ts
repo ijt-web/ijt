@@ -37,7 +37,10 @@ export async function POST(req: Request) {
 
     const body = await req.json();
     const question = await prisma.question.create({
-      data: body
+      data: {
+        ...body,
+        stream: body.stream || 'all'
+      }
     });
 
     return NextResponse.json(question, { status: 201 });

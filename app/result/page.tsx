@@ -47,12 +47,12 @@ export default function ResultPage() {
       <Card className={`w-full max-w-[480px] text-center !bg-white/95 backdrop-blur-xl animate-scale-in relative z-10 transition-all duration-700
         ${result.passed ? 'shadow-[0_0_80px_rgba(46,125,50,0.3)] border border-green-pass/20' : 'shadow-[0_0_80px_rgba(229,57,53,0.3)] border border-red-accent/20'}
       `}>
-        {/* Spec: IJT logo (64px, centered) */}
+        {/* Spec: Study Aid logo (64px, centered) */}
         {logoUrl ? (
           <img src={logoUrl} alt="Logo" className="h-16 w-auto mx-auto mb-6 object-contain" />
         ) : (
-          <div className="w-16 h-16 bg-blue-primary rounded-full mx-auto mb-6 flex items-center justify-center text-white text-2xl font-bold">
-            IJT
+          <div className="w-16 h-16 bg-blue-primary rounded-full mx-auto mb-6 flex items-center justify-center text-white text-xs font-bold text-center px-1">
+            Study Aid
           </div>
         )}
 
@@ -60,8 +60,8 @@ export default function ResultPage() {
         <h1 className="text-2xl font-bold text-text-dark mb-2">{result.name}</h1>
 
         {/* Spec: Roll No · Student ID · Class — Poppins 400, muted, small */}
-        <p className="text-text-muted text-sm mb-6">
-          Roll No: {result.rollNumber} · Class {result.class}
+        <p className="text-text-muted text-sm mb-6 uppercase tracking-wider">
+          Roll No: {result.rollNumber} · Class {result.class} · {result.stream || 'All'}
         </p>
 
         <div className="w-full h-px bg-grey-border mb-6" />

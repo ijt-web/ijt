@@ -10,7 +10,7 @@ interface SplashScreenProps {
 
 export function SplashScreen({ 
   logoUrl, 
-  orgName = 'Islami Jamiat Talba',
+  orgName = 'Study Aid project',
   message = 'Preparing your examination...'
 }: SplashScreenProps) {
   return (
@@ -27,12 +27,12 @@ export function SplashScreen({
           }}
         />
         
-        {/* Spec: IJT logo (120px) with breathing pulse animation, 2.8s */}
+        {/* Spec: Study Aid logo (120px) with breathing pulse animation, 2.8s */}
         <div className="w-[120px] h-[120px] bg-white rounded-full flex items-center justify-center shadow-2xl animate-breathe relative z-10">
           {logoUrl ? (
             <img src={logoUrl} alt="Logo" className="h-16 w-auto object-contain" />
           ) : (
-            <span className="text-blue-primary text-4xl font-black">IJT</span>
+            <span className="text-blue-primary text-4xl font-black text-center px-2">Study Aid</span>
           )}
         </div>
       </div>

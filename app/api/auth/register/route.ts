@@ -5,10 +5,14 @@ import { signStudentToken } from '@/lib/jwt';
 
 export async function POST(req: Request) {
   try {
-    const { name, fatherName, studentId, password, class: studentClass } = await req.json();
+    const { name, studentId, password, class: studentClass, stream } = await req.json();
 
-    if (!name || !fatherName || !studentId || !password || !studentClass) {
+    if (!name || !studentId || !password || !studentClass || !stream) {
       return NextResponse.json({ error: 'All fields are required' }, { status: 400 });
+    }
+
+    if (stream !== 'biology' && stream !== 'computer') {
+      return NextResponse.json({ error: 'Invalid stream selected' }, { status: 400 });
     }
 
     if (password.length < 6) {
@@ -31,11 +35,11 @@ export async function POST(req: Request) {
     const student = await prisma.student.create({
       data: {
         name,
-        fatherName,
         studentId,
         rollNumber: parseInt(studentId, 10),
         password: hashedPassword,
-        class: studentClass
+        class: studentClass,
+        stream
       }
     });
 
@@ -44,7 +48,8 @@ export async function POST(req: Request) {
       id: student.id,
       studentId: student.studentId,
       class: student.class,
-      name: student.name
+      name: student.name,
+      stream: student.stream
     });
 
     return NextResponse.json({ 

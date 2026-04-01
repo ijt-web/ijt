@@ -55,12 +55,16 @@ export default function ExamPage() {
       .catch(() => {});
   }, [router]);
 
-  // Spec: Tab-switching detection & Prevent Back/Reload
+  // Spec: Tab-switching detection & Prevent Back/Reload + Anti-Cheat Hardening
   useEffect(() => {
     const handleVisibilityChange = () => {
       if (document.hidden) {
         alert('⚠️ Warning: Do not switch tabs during the examination. Your activity is being monitored.');
       }
+    };
+
+    const handleBlur = () => {
+      alert('⚠️ Warning: You have lost focus on the exam window. Clicking outside or switching windows is prohibited.');
     };
 
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
@@ -76,14 +80,39 @@ export default function ExamPage() {
       window.history.pushState(null, '', window.location.href);
     };
 
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Block common dev tools shortcuts and copy/paste
+      if (
+        e.key === 'F12' || 
+        (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) ||
+        (e.ctrlKey && e.key === 'U') ||
+        (e.ctrlKey && (e.key === 'c' || e.key === 'v' || e.key === 'x'))
+      ) {
+        e.preventDefault();
+        alert('⚠️ Warning: Keyboard shortcuts for dev tools and copy/paste are disabled.');
+      }
+    };
+
+    const blockEvent = (e: Event) => e.preventDefault();
+
     document.addEventListener('visibilitychange', handleVisibilityChange);
+    window.addEventListener('blur', handleBlur);
     window.addEventListener('beforeunload', handleBeforeUnload);
     window.addEventListener('popstate', handlePopState);
+    window.addEventListener('keydown', handleKeyDown);
+    document.addEventListener('contextmenu', blockEvent);
+    document.addEventListener('copy', blockEvent);
+    document.addEventListener('paste', blockEvent);
 
     return () => {
       document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('blur', handleBlur);
       window.removeEventListener('beforeunload', handleBeforeUnload);
       window.removeEventListener('popstate', handlePopState);
+      window.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener('contextmenu', blockEvent);
+      document.removeEventListener('copy', blockEvent);
+      document.removeEventListener('paste', blockEvent);
     };
   }, []);
 
@@ -132,7 +161,7 @@ export default function ExamPage() {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify({ answers: answersArray })
+        body: JSON.stringify({ answers: answersArray, startTimeToken: sessionStorage.getItem('exam_start_token') })
       });
 
       const data = await res.json();
@@ -146,6 +175,7 @@ export default function ExamPage() {
       sessionStorage.removeItem('exam_questions');
       sessionStorage.removeItem('exam_duration');
       sessionStorage.removeItem('examEndTime');
+      sessionStorage.removeItem('exam_start_token');
 
       router.push('/result');
     } catch (err: any) {

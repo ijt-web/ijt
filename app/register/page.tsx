@@ -13,10 +13,10 @@ export default function RegisterPage() {
   const [logoUrl, setLogoUrl] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     name: '',
-    fatherName: '',
     studentId: '',
     password: '',
-    class: '9'
+    class: '9',
+    stream: 'biology'
   });
 
   useEffect(() => {
@@ -75,17 +75,17 @@ export default function RegisterPage() {
         <div className="text-center mb-10">
           {/* Logo: swappable — uses uploaded logo or placeholder */}
           {logoUrl ? (
-            <img src={logoUrl} alt="IJT Logo" className="h-16 w-auto mx-auto mb-4 object-contain" />
+            <img src={logoUrl} alt="Study Aid Logo" className="h-16 w-auto mx-auto mb-4 object-contain" />
           ) : (
-            <div className="w-16 h-16 bg-blue-primary rounded-full mx-auto mb-4 flex items-center justify-center text-white text-2xl font-bold">
-              IJT
+            <div className="w-16 h-16 bg-blue-primary rounded-full mx-auto mb-4 flex items-center justify-center text-white text-xs font-bold text-center px-1">
+              Study Aid
             </div>
           )}
           <h1 className="text-3xl font-bold text-text-dark tracking-tight">
             Student Registration
           </h1>
           <p className="text-text-muted mt-2">
-            Islami Jamiat Talba Examination System
+            Study Aid Project Examination System
           </p>
         </div>
 
@@ -97,13 +97,7 @@ export default function RegisterPage() {
             value={formData.name}
             onChange={(e) => setFormData({...formData, name: e.target.value})}
           />
-          <Input 
-            label="Father's Name" 
-            placeholder="e.g. Muhammad Ali"
-            required
-            value={formData.fatherName}
-            onChange={(e) => setFormData({...formData, fatherName: e.target.value})}
-          />
+
           <Input 
             label="System Auto-Generated Student ID" 
             placeholder="Generating..."
@@ -122,18 +116,34 @@ export default function RegisterPage() {
             value={formData.password}
             onChange={(e) => setFormData({...formData, password: e.target.value})}
           />
-          <div className="flex flex-col gap-2">
-            <label className="text-sm font-semibold text-text-muted uppercase tracking-wider">
-              Class
-            </label>
-            <select 
-              className="px-4 py-3 bg-white border-2 border-grey-border rounded-lg outline-none focus:border-blue-primary transition-all cursor-pointer"
-              value={formData.class}
-              onChange={(e) => setFormData({...formData, class: e.target.value})}
-            >
-              <option value="9">Class 9</option>
-              <option value="10">Class 10</option>
-            </select>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="flex flex-col gap-2">
+              <label className="text-sm font-semibold text-text-muted uppercase tracking-wider">
+                Class
+              </label>
+              <select 
+                className="px-4 py-3 bg-white border-2 border-grey-border rounded-lg outline-none focus:border-blue-primary transition-all cursor-pointer"
+                value={formData.class}
+                onChange={(e) => setFormData({...formData, class: e.target.value})}
+              >
+                <option value="9">Class 9</option>
+                <option value="10">Class 10</option>
+              </select>
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <label className="text-sm font-semibold text-text-muted uppercase tracking-wider">
+                Stream
+              </label>
+              <select 
+                className="px-4 py-3 bg-white border-2 border-grey-border rounded-lg outline-none focus:border-blue-primary transition-all cursor-pointer"
+                value={formData.stream}
+                onChange={(e) => setFormData({...formData, stream: e.target.value})}
+              >
+                <option value="biology">Biology</option>
+                <option value="computer">Computer</option>
+              </select>
+            </div>
           </div>
 
           {error && (

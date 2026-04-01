@@ -40,7 +40,8 @@ export async function POST(req: Request) {
       id: student.id,
       studentId: student.studentId,
       class: student.class,
-      name: student.name
+      name: student.name,
+      stream: student.stream
     });
 
     return NextResponse.json({ token }, { status: 200 });
