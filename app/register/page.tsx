@@ -15,8 +15,8 @@ export default function RegisterPage() {
     name: '',
     studentId: '',
     password: '',
-    class: '9',
-    stream: 'biology'
+    class: '11',
+    stream: 'engineering'
   });
 
   useEffect(() => {
@@ -126,8 +126,8 @@ export default function RegisterPage() {
                 value={formData.class}
                 onChange={(e) => setFormData({...formData, class: e.target.value})}
               >
-                <option value="9">Class 9</option>
-                <option value="10">Class 10</option>
+                <option value="11">Class 11</option>
+                <option value="12">Class 12</option>
               </select>
             </div>
 
@@ -140,7 +140,7 @@ export default function RegisterPage() {
                 value={formData.stream}
                 onChange={(e) => setFormData({...formData, stream: e.target.value})}
               >
-                <option value="biology">Biology</option>
+                <option value="engineering">Engineering</option>
                 <option value="computer">Computer</option>
               </select>
             </div>

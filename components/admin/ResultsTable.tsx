@@ -91,8 +91,8 @@ export function ResultsTable({ results }: ResultsTableProps) {
           onChange={(e) => setFilterClass(e.target.value)}
         >
           <option value="all">All Classes</option>
-          <option value="9">Class 9</option>
-          <option value="10">Class 10</option>
+          <option value="11">Class 11</option>
+          <option value="12">Class 12</option>
         </select>
         <select
           className="px-3 py-2 border border-grey-border rounded-lg text-sm bg-white"
@@ -100,7 +100,7 @@ export function ResultsTable({ results }: ResultsTableProps) {
           onChange={(e) => setFilterStream(e.target.value)}
         >
           <option value="all">All Streams</option>
-          <option value="biology">Biology</option>
+          <option value="engineering">Engineering</option>
           <option value="computer">Computer</option>
         </select>
         <select

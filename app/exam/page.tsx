@@ -251,7 +251,10 @@ export default function ExamPage() {
           {currentPage > 1 ? (
             <Button
               variant="secondary"
-              onClick={() => setCurrentPage(p => p - 1)}
+              onClick={() => {
+                setCurrentPage(p => p - 1);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
               className="flex-1 md:flex-none"
             >
               ← Back
@@ -261,7 +264,10 @@ export default function ExamPage() {
           {/* Spec: Next — hidden on last page. Submit — only on last page */}
           {currentPage < totalPages ? (
             <Button
-              onClick={() => setCurrentPage(p => p + 1)}
+              onClick={() => {
+                setCurrentPage(p => p + 1);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
               className="flex-1 md:flex-none"
             >
               Next →

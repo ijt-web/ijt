@@ -128,8 +128,8 @@ export function QuestionForm({ classId, editingQuestion, onSaved, onCancelEdit }
             onChange={(e) => setForm(prev => ({ ...prev, stream: e.target.value }))}
           >
             <option value="all">All (Both Streams)</option>
-            <option value="biology">Biology Only</option>
             <option value="computer">Computer Only</option>
+            <option value="chemistry">Chemistry Only</option>
           </select>
         </div>
       </div>

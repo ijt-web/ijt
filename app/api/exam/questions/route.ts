@@ -21,12 +21,15 @@ export async function GET(req: Request) {
     const studentId = decoded.studentId;
 
     // Fetch questions for student's class and stream
+    // Computer students see: stream = "all" OR stream = "computer"
+    // Engineering students see: stream = "all" OR stream = "chemistry"
+    const targetStream = decoded.stream === 'computer' ? 'computer' : 'chemistry';
     const fetchedQuestions = await prisma.question.findMany({
       where: { 
         class: studentClass,
         OR: [
           { stream: 'all' },
-          { stream: decoded.stream || 'all' }
+          { stream: targetStream }
         ]
       }
     });

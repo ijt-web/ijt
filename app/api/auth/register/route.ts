@@ -11,7 +11,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'All fields are required' }, { status: 400 });
     }
 
-    if (stream !== 'biology' && stream !== 'computer') {
+    if (stream !== 'engineering' && stream !== 'computer') {
       return NextResponse.json({ error: 'Invalid stream selected' }, { status: 400 });
     }
 

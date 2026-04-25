@@ -15,7 +15,7 @@ model Student {
   studentId  String   @unique
   password   String
   class      String
-  stream     String   @default("biology")
+  stream     String   @default("computer")
   createdAt  DateTime @default(now())
   result     Result?
 }
@@ -49,7 +49,7 @@ model Result {
   total       Int
   percentage  Float
   passed      Boolean
-  stream      String          @default("biology")
+  stream      String          @default("computer")
   submittedAt DateTime        @default(now())
   answers     AttemptAnswer[]
   student     Student         @relation(fields: [studentId], references: [id])

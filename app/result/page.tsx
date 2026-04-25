@@ -61,7 +61,7 @@ export default function ResultPage() {
 
         {/* Spec: Roll No · Student ID · Class — Poppins 400, muted, small */}
         <p className="text-text-muted text-sm mb-6 uppercase tracking-wider">
-          Roll No: {result.rollNumber} · Class {result.class} · {result.stream || 'All'}
+          Roll No: {result.rollNumber} · Class {result.class} · {result.stream === 'computer' ? 'Computer' : result.stream === 'engineering' ? 'Engineering' : 'All'}
         </p>
 
         <div className="w-full h-px bg-grey-border mb-6" />
